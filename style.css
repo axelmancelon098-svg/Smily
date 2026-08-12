@@ -1,0 +1,452 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+body {
+    font-family: monospace;
+}
+
+/* ========================================
+   TV SCREEN
+======================================== */
+
+#tv {
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background: #000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: background 0.2s;
+}
+
+
+/* ========================================
+   SMILY
+======================================== */
+
+#smily {
+    position: absolute;
+
+    width: min(75vw, 700px);
+    max-height: 75vh;
+
+    object-fit: contain;
+
+    z-index: 2;
+
+    filter:
+        contrast(1.25)
+        brightness(0.9)
+        saturate(0.8);
+
+    animation:
+        smilyFloat 2.5s infinite steps(12),
+        smilyGlitch 0.8s infinite;
+}
+
+
+/* ========================================
+   STATIC
+======================================== */
+
+#static {
+    position: absolute;
+
+    width: min(112.5vw, 1050px);
+    max-height: 112.5vh;
+
+    object-fit: contain;
+
+    opacity: 0;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    mix-blend-mode: normal;
+
+    filter: none;
+}
+
+
+/* ========================================
+   SCANLINES
+======================================== */
+
+#scanlines {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 10;
+
+    pointer-events: none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.06) 0px,
+            rgba(255,255,255,0.06) 1px,
+            rgba(0,0,0,0.15) 2px,
+            rgba(0,0,0,0.15) 4px
+        );
+
+    opacity: 0.55;
+}
+
+
+/* ========================================
+   SCREEN DARKNESS
+======================================== */
+
+#tv::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 11;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 45%,
+            rgba(0,0,0,0.65) 100%
+        );
+}
+
+
+/* ========================================
+   DIALOGUE
+======================================== */
+
+#dialogue {
+    position: absolute;
+
+    bottom: 8%;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 90%;
+
+    text-align: center;
+
+    color: #ff1111;
+
+    font-size: clamp(22px, 4vw, 48px);
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        2px 0 #500000,
+        -2px 0 #ff0000,
+        0 0 5px #ff0000,
+        0 0 15px #ff0000;
+
+    z-index: 20;
+
+    animation:
+        textGlitch 0.25s infinite steps(2),
+        textFlicker 1.5s infinite;
+}
+
+
+/* ========================================
+   CHOICES
+======================================== */
+
+#choices {
+    position: absolute;
+
+    bottom: 17%;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    display: flex;
+
+    gap: 25px;
+
+    z-index: 30;
+
+    visibility: hidden;
+}
+
+#choices button {
+    min-width: 150px;
+
+    padding: 12px 25px;
+
+    background: #050505;
+
+    color: white;
+
+    border: 2px solid #ff1111;
+
+    font-family: monospace;
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    text-shadow:
+        0 0 5px red;
+
+    box-shadow:
+        0 0 8px rgba(255,0,0,0.5);
+
+    transition: 0.1s;
+}
+
+#choices button:hover {
+    background: #220000;
+
+    transform: scale(1.05);
+
+    box-shadow:
+        0 0 20px red;
+}
+
+
+/* ========================================
+   RED HORROR MODE
+======================================== */
+
+#tv.redMode {
+    background: #4b0000;
+
+    animation: redShake 0.08s infinite;
+}
+
+#tv.redMode #scanlines {
+    opacity: 0.9;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,0,0,0.15) 0px,
+            rgba(255,0,0,0.15) 2px,
+            rgba(0,0,0,0.35) 4px,
+            rgba(0,0,0,0.35) 7px
+        );
+}
+
+
+/* ========================================
+   RED STATIC
+======================================== */
+
+#tv.redMode::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -20%;
+
+    z-index: 15;
+
+    pointer-events: none;
+
+    opacity: 0.3;
+
+    background:
+        repeating-radial-gradient(
+            circle,
+            transparent 0px,
+            rgba(255,0,0,0.25) 2px,
+            transparent 5px
+        );
+
+    animation: redStatic 0.15s steps(2) infinite;
+}
+
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+
+@keyframes smilyFloat {
+
+    0% {
+        transform: translate(0px, 0px);
+    }
+
+    25% {
+        transform: translate(2px, -2px);
+    }
+
+    50% {
+        transform: translate(-2px, 1px);
+    }
+
+    75% {
+        transform: translate(1px, 2px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+
+@keyframes smilyGlitch {
+
+    0% {
+        filter:
+            contrast(1.25)
+            brightness(0.9)
+            saturate(0.8);
+    }
+
+    8% {
+        filter:
+            contrast(2)
+            brightness(1.1)
+            hue-rotate(5deg);
+    }
+
+    10% {
+        filter:
+            contrast(1.25)
+            brightness(0.9);
+    }
+
+    45% {
+        transform: translate(1px, 0);
+    }
+
+    46% {
+        transform: translate(-4px, 2px);
+    }
+
+    47% {
+        transform: translate(3px, -1px);
+    }
+
+    48% {
+        transform: translate(0);
+    }
+}
+
+
+@keyframes textGlitch {
+
+    0% {
+        transform: translateX(-50%);
+    }
+
+    20% {
+        transform: translateX(calc(-50% + 2px));
+    }
+
+    21% {
+        transform: translateX(calc(-50% - 3px));
+    }
+
+    22% {
+        transform: translateX(-50%);
+    }
+
+    60% {
+        transform: translateX(calc(-50% + 1px));
+    }
+
+    61% {
+        transform: translateX(calc(-50% - 2px));
+    }
+
+    62% {
+        transform: translateX(-50%);
+    }
+}
+
+
+@keyframes textFlicker {
+
+    0%, 100% {
+        opacity: 1;
+    }
+
+    49% {
+        opacity: 0.65;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+@keyframes redShake {
+
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(2px, -1px);
+    }
+
+    50% {
+        transform: translate(-2px, 1px);
+    }
+
+    75% {
+        transform: translate(1px, 2px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+
+@keyframes redStatic {
+
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-15px, 8px);
+    }
+
+    50% {
+        transform: translate(12px, -5px);
+    }
+
+    75% {
+        transform: translate(-8px, -12px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
